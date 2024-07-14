@@ -1,0 +1,52 @@
+from sympy import symbols
+
+# Definition of variables(symbolic only)
+alpha, beta, gamma, delta = symbols('alpha beta gamma delta')
+
+# Definition of functions 
+def finite_alpha_cut(a_mu, c_mu, d_mu, alpha):
+    return [a_mu + alpha * (c_mu - a_mu), d_mu - alpha * (d_mu - c_mu)]
+
+def finite_beta_cut(a_T, b_T, c_T, e_T, f_T, w_T, beta):
+   
+        return [
+            [a_T, (beta * (a_T - b_T) - w_T * a_T + b_T) / (1 - w_T)],
+            [(beta * (c_T - b_T) - w_T * c_T + b_T) / (1 - w_T), (beta * (c_T - e_T) - w_T * c_T + e_T) / (1 - w_T)],
+            [(beta * (f_T - e_T) - w_T * f_T + e_T) / (1 - w_T), f_T]
+        ]
+
+def finite_gamma_cut(a_I, b_I, c_I, e_I, f_I, w_I, gamma):
+   
+        return [
+            [a_I, (a_I * w_I + gamma * (b_I - a_I)) / w_I],
+            [(c_I * w_I - gamma * (c_I - b_I)) / w_I, (c_I * w_I + gamma * (e_I - c_I)) / w_I],
+            [(f_I * w_I - gamma * (f_I - e_I)) / w_I, f_I]
+        ]
+
+def finite_delta_cut(a_F, b_F, c_F, e_F, f_F, w_F, delta):
+   
+        return [
+            [a_F, (a_F * w_F + delta * (b_F - a_F)) / w_F],
+            [(c_F * w_F - delta * (c_F - b_F)) / w_F, (c_F * w_F + delta * (e_F - c_F)) / w_F],
+            [(f_F * w_F - delta * (f_F - e_F)) / w_F, f_F]
+        ]
+
+# Replace values for calculation
+a_mu, c_mu, d_mu = 56, 64, 72
+a_T, b_T, c_T, e_T, f_T, w_T = 45, 56, 64, 72, 83, 0.65
+a_I, b_I, c_I, e_I, f_I, w_I = 48, 56, 64, 72, 77, 0.43
+a_F, b_F, c_F, e_F, f_F, w_F = 51, 56, 64, 72, 79, 0.32
+
+# Computation of various cuts
+alpha_cut = finite_alpha_cut(a_mu, c_mu, d_mu, alpha)
+beta_cut = finite_beta_cut(a_T, b_T, c_T, e_T, f_T, w_T, beta)
+gamma_cut = finite_gamma_cut(a_I, b_I, c_I, e_I, f_I, w_I, gamma)
+delta_cut = finite_delta_cut(a_F, b_F, c_F, e_F, f_F, w_F, delta)
+
+print("Finite α-cut:", alpha_cut)
+print("Finite β-cut: When beta <= ",w_T,";", "[",a_T,",",f_T,"]")
+print("Finite β-cut: When beta > ",w_T,";", beta_cut)
+print("Finite γ-cut: When gamma >= ",w_I,";", "[",a_I,",",f_I,"]")
+print("Finite γ-cut: When gamma < ",w_I,";", gamma_cut)
+print("Finite δ-cut: When delta >= ",w_F,";", "[",a_F,",",f_F,"]")
+print("Finite δ-cut: When delta < ",w_F,";", delta_cut)
